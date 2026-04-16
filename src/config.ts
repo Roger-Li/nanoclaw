@@ -70,8 +70,7 @@ export const MAX_CONCURRENT_CONTAINERS = Math.max(
 
 // oMLX local model server
 // OMLX_ENABLED is the primary switch. Also auto-enables when OMLX_HOST or OMLX_API_KEY is set.
-export const OMLX_HOST =
-  process.env.OMLX_HOST || envConfig.OMLX_HOST || '';
+export const OMLX_HOST = process.env.OMLX_HOST || envConfig.OMLX_HOST || '';
 export const OMLX_API_KEY =
   process.env.OMLX_API_KEY || envConfig.OMLX_API_KEY || '';
 export const OMLX_ADMIN_TOOLS =
