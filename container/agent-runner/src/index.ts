@@ -469,7 +469,8 @@ async function runQuery(
         'Skill',
         'NotebookEdit',
         'mcp__nanoclaw__*',
-        'mcp__omlx__*'
+        'mcp__omlx__*',
+        'mcp__qmd__*',
       ],
       env: sdkEnv,
       permissionMode: 'bypassPermissions',
@@ -496,6 +497,10 @@ async function runQuery(
             },
           },
         } : {}),
+        qmd: {
+          type: 'http',
+          url: 'http://host.docker.internal:8182/mcp',
+        },
       },
       hooks: {
         PreCompact: [
