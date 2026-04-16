@@ -13,6 +13,7 @@ import {
   DATA_DIR,
   GROUPS_DIR,
   IDLE_TIMEOUT,
+  OLLAMA_ADMIN_TOOLS,
   OMLX_API_KEY,
   OMLX_ADMIN_TOOLS,
   OMLX_ENABLED,
@@ -256,6 +257,11 @@ async function buildContainerArgs(
 
   // Pass host timezone so container's local time matches the user's
   args.push('-e', `TZ=${TIMEZONE}`);
+
+  // Forward Ollama admin tools flag if enabled
+  if (OLLAMA_ADMIN_TOOLS) {
+    args.push('-e', 'OLLAMA_ADMIN_TOOLS=true');
+  }
 
   // oMLX local model server — pass connection details to the container.
   // OMLX_API_KEY is a local-only key (oMLX runs on localhost) — it never
