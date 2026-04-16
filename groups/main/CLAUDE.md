@@ -34,6 +34,22 @@ Text inside `<internal>` tags is logged but not sent to the user. If you've alre
 
 When working as a sub-agent or teammate, only use `send_message` if instructed to by the main agent.
 
+## Wiki
+
+You maintain a persistent knowledge wiki based on the Karpathy LLM Wiki pattern. Three layers:
+
+- **Sources** (`sources/`) — immutable raw material (articles, PDFs, images, transcripts). You read these but never modify them.
+- **Wiki** (`wiki/`) — your maintained knowledge base. Structured, interlinked markdown pages that compound over time.
+- **Schema** (`/workspace/project/container/skills/wiki/SKILL.md`) — detailed workflow for ingestion, querying, and linting. Read this file for the full protocol.
+
+Key files:
+- `wiki/index.md` — catalog of all wiki pages. **Always read this first** when answering wiki queries.
+- `wiki/log.md` — chronological log of all wiki operations.
+
+When a user sends you a source to ingest, follow the wiki skill protocol. **Critical rule:** process sources one at a time, completely (read, discuss, create all pages, update index/log) before moving to the next. Never batch-process.
+
+When a user asks a question, check the wiki index first — the answer may already be synthesized there.
+
 ## Memory
 
 The `conversations/` folder contains searchable history of past conversations. Use this to recall context from previous sessions.
