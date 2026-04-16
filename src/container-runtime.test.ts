@@ -114,15 +114,10 @@ describe('ensureContainerRuntimeRunning', () => {
 // --- cleanupOrphans ---
 
 describe('cleanupOrphans', () => {
-  it('stops orphaned nanoclaw containers from JSON output', () => {
-    // Apple Container ls returns JSON
-    const lsOutput = JSON.stringify([
-      { status: 'running', configuration: { id: 'nanoclaw-group1-111' } },
-      { status: 'stopped', configuration: { id: 'nanoclaw-group2-222' } },
-      { status: 'running', configuration: { id: 'nanoclaw-group3-333' } },
-      { status: 'running', configuration: { id: 'other-container' } },
-    ]);
-    mockExecSync.mockReturnValueOnce(lsOutput);
+  it('stops orphaned nanoclaw containers from ps output', () => {
+    // Docker ps returns newline-separated container names
+    const psOutput = 'nanoclaw-group1-111\nnanoclaw-group3-333\n';
+    mockExecSync.mockReturnValueOnce(psOutput);
     // stop calls succeed
     mockExecSync.mockReturnValue('');
 
@@ -147,7 +142,7 @@ describe('cleanupOrphans', () => {
   });
 
   it('does nothing when no orphans exist', () => {
-    mockExecSync.mockReturnValueOnce('[]');
+    mockExecSync.mockReturnValueOnce('');
 
     cleanupOrphans();
 
@@ -169,11 +164,8 @@ describe('cleanupOrphans', () => {
   });
 
   it('continues stopping remaining containers when one stop fails', () => {
-    const lsOutput = JSON.stringify([
-      { status: 'running', configuration: { id: 'nanoclaw-a-1' } },
-      { status: 'running', configuration: { id: 'nanoclaw-b-2' } },
-    ]);
-    mockExecSync.mockReturnValueOnce(lsOutput);
+    const psOutput = 'nanoclaw-a-1\nnanoclaw-b-2\n';
+    mockExecSync.mockReturnValueOnce(psOutput);
     // First stop fails
     mockExecSync.mockImplementationOnce(() => {
       throw new Error('already stopped');
